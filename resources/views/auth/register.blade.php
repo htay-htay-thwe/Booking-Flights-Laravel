@@ -1,60 +1,123 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+<!DOCTYPE html>
+<html lang="en">
 
-        <x-validation-errors class="mb-4" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register</title>
+    @include('layouts.cdn')
 
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
+</head>
 
-            <div>
-                <x-label for="name" value="{{ __('Name') }}" />
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+<body class="flex items-center justify-center min-h-screen bg-center bg-no-repeat bg-cover"
+    style="background-image: url('/images/city-bg.jpg');"> {{-- change to your background --}}
+
+    <form action="{{ route('register#action') }}" method="POST"
+        class="w-full max-w-sm p-8 shadow-lg bg-gradient-to-b from-indigo-400 to-purple-600 rounded-2xl">
+        @csrf
+
+        <!-- Logo -->
+        <div class="flex justify-center mb-6">
+            <div class="flex items-center justify-center w-16 h-16 bg-white rounded-full">
+                <img src="/img/logo.png" alt="Logo" class="w-16 h-16 rounded-full"> {{-- Replace with your logo --}}
             </div>
+        </div>
 
-            <div class="mt-4">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            </div>
+        <h2 class="mb-8 text-2xl font-bold text-center text-white">Create Account</h2>
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
-
-            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                <div class="mt-4">
-                    <x-label for="terms">
-                        <div class="flex items-center">
-                            <x-checkbox name="terms" id="terms" required />
-
-                            <div class="ms-2">
-                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Terms of Service').'</a>',
-                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Privacy Policy').'</a>',
-                                ]) !!}
-                            </div>
-                        </div>
-                    </x-label>
+        @if (session('error'))
+            <div class="space-y-4 text-sm text-red-500">{{ session('error') }}</div>
+        @endif
+        <div class="space-y-4">
+            <!-- Username -->
+            <div class="mb-5">
+                <div class="flex items-center text-white">
+                    <i class="mr-2 fas fa-user"></i>
+                    <input type="text" name="username" id="username" @error('username') is-invalid @enderror
+                        class="w-full text-white placeholder-white bg-transparent border-b border-white focus:outline-none"
+                        placeholder="Enter username" />
                 </div>
-            @endif
-
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-button class="ms-4">
-                    {{ __('Register') }}
-                </x-button>
+                @error('username')
+                    <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
+                @enderror
             </div>
-        </form>
-    </x-authentication-card>
-</x-guest-layout>
+
+            <!-- Email -->
+            <div class="mb-5">
+                <div class="flex items-center gap-2 text-white">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" name="email" id="email" @error('email') is-invalid @enderror
+                        class="w-full text-white placeholder-white bg-transparent border-b border-white focus:outline-none"
+                        placeholder="Enter email" />
+                </div>
+                @error('email')
+                    <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Password -->
+            <div class="mb-5">
+                <div class="flex items-center text-white">
+                    <i class="mr-2 fas fa-lock"></i>
+                    <input type="password" name="password" id="password" @error('password') is-invalid @enderror
+                        class="w-full text-white placeholder-white bg-transparent border-b border-white focus:outline-none"
+                        placeholder="Enter password" />
+                </div>
+                @error('password')
+                    <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Confirmed Password -->
+            <div class="mb-5">
+                <div class="flex items-center gap-2 text-white">
+                    <i class="fa-solid fa-key"></i>
+                    <input type="password" name="confirmed_password" id="password"
+                        @error('confirmed_password') is-invalid @enderror
+                        class="w-full text-white placeholder-white bg-transparent border-b border-white focus:outline-none"
+                        placeholder="Confirm password" />
+                </div>
+                @error('confirmed_password')
+                    <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Role -->
+            <div class="mb-5">
+                <div class="flex items-center text-white">
+                    <i class="mr-2 fas fa-user-tag"></i>
+                    <input type="text" name="role" id="role" @error('role') is-invalid @enderror
+                        class="w-full text-white placeholder-white bg-transparent border-b border-white focus:outline-none"
+                        placeholder="Enter role" />
+                </div>
+                @error('role')
+                    <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
+                @enderror
+            </div>
+        </div>
+
+        <!-- Links -->
+        <div class="flex justify-between mt-6 text-sm">
+            <a href="/login" class="text-white hover:underline">Login Page</a>
+            <a href="/forgot-password" class="text-white hover:underline">Forgot password?</a>
+        </div>
+
+        <!-- Register Button -->
+        <button type="submit"
+            class="w-full py-2 mt-6 font-semibold text-indigo-600 transition bg-white rounded-full hover:bg-gray-200">
+            Register
+        </button>
+
+        <!-- Divider -->
+        {{-- <div class="flex items-center justify-center my-4 text-white">
+            <hr class="flex-1 border-t border-white" />
+            <span class="mx-3 text-sm">or sign up with</span>
+            <hr class="flex-1 border-t border-white" />
+        </div> --}}
+
+    </form>
+</body>
+
+
+</html>
