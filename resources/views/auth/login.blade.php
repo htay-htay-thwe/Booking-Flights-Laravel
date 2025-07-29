@@ -1,48 +1,86 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+<!DOCTYPE html>
+<html lang="en">
 
-        <x-validation-errors class="mb-4" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+    @include('layouts.cdn')
+</head>
 
-        @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ session('status') }}
+<body class="flex items-center justify-center min-h-screen bg-center bg-no-repeat bg-cover"
+    style="background-image: url('/images/city-bg.jpg');"> {{-- replace with your background image --}}
+
+    <form action="{{ route('login#action') }}" method="POST"
+        class="w-full max-w-sm p-8 shadow-lg bg-gradient-to-b from-indigo-400 to-purple-600 rounded-2xl">
+        @csrf
+
+        <!-- Logo -->
+        <div class="flex justify-center mb-6">
+            <div class="flex items-center justify-center w-16 h-16 bg-white rounded-full">
+                <img src="/img/logo.png" alt="Logo" class="w-16 h-16 rounded-full"> {{-- Replace with your logo --}}
             </div>
-        @endif
+        </div>
 
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
+        <!-- Title -->
+        <h2 class="mb-8 text-2xl font-bold text-center text-white">LOG IN</h2>
 
-            <div>
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+        <!-- Email -->
+        <div class="mb-5">
+            <div class="flex items-center gap-2 text-white">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" name="email" id="email" placeholder="Email"
+                    class="w-full text-white placeholder-white bg-transparent border-b border-white focus:outline-none focus:border-white" />
             </div>
+            @error('email')
+                <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
+            @enderror
+        </div>
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
+        <!-- Password -->
+        <div class="mb-5">
+            <div class="flex items-center text-white">
+                <i class="mr-2 fas fa-lock"></i>
+                <input type="password" name="password" id="password" placeholder="Password"
+                    class="w-full text-white placeholder-white bg-transparent border-b border-white focus:outline-none focus:border-white" />
             </div>
+            @error('password')
+                <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
+            @enderror
+        </div>
 
-            <div class="block mt-4">
-                <label for="remember_me" class="flex items-center">
-                    <x-checkbox id="remember_me" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
+        <!-- Role -->
+        <div class="mb-5">
+            <div class="flex items-center text-white">
+                <i class="mr-2 fas fa-user-tag"></i>
+                <input type="text" name="role" id="role" placeholder="Role"
+                    class="w-full text-white placeholder-white bg-transparent border-b border-white focus:outline-none focus:border-white" />
             </div>
+            @error('role')
+                <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
+            @enderror
+        </div>
 
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
+        <!-- Login Button -->
+        <button type="submit"
+            class="w-full py-2 font-semibold text-indigo-600 transition duration-200 bg-white rounded-full hover:bg-gray-200">
+            Login
+        </button>
 
-                <x-button class="ms-4">
-                    {{ __('Log in') }}
-                </x-button>
-            </div>
-        </form>
-    </x-authentication-card>
-</x-guest-layout>
+        <!-- Forgot Password -->
+        <div class="mt-4 text-center">
+            <a href="/forgot-password" class="text-sm text-white hover:underline">Forgot Password?</a>
+        </div>
+
+        <!-- Optional: Register Link -->
+        <div class="mt-2 text-center">
+            <a href="/register" class="text-sm text-white hover:underline">Register Page</a>
+        </div>
+
+
+
+    </form>
+</body>
+
+</html>
