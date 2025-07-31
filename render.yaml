@@ -1,36 +1,53 @@
-version: 0.1
 services:
-  laravel:
-    image: htayhtaythwe717/book-flights:laravel_0.1
-    env:
-      APP_ENV: production
-      DB_HOST: mysql
-      DB_DATABASE: flight_booking_system
-      DB_USERNAME: htaythwe
-      DB_PASSWORD: htaythwe
-    expose:
-      - 9000
+  - type: web
+    name: laravel-backend
+    env: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    buildCommand: ""
+    startCommand: ""
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DB_HOST
+        value: mysql
+      - key: DB_DATABASE
+        value: flight_booking_system
+      - key: DB_USERNAME
+        value: htaythwe
+      - key: DB_PASSWORD
+        value: htaythwe
 
-  nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    depends_on:
-      - laravel
+  - type: web
+    name: nginx-proxy
+    env: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./nginx/Dockerfile
+    buildCommand: ""
+    startCommand: ""
+    envVars: []
     ports:
       - port: 80
 
-  mysql:
+  - type: pserv
+    name: mysql
+    env: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ""
     image: mysql:8.0
-    env:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: flight_booking_system
-      MYSQL_USER: htaythwe
-      MYSQL_PASSWORD: htaythwe
-    volumes:
-      - mysql_data:/var/lib/mysql
-    ports:
-      - port: 3306
-
-volumes:
-  mysql_data:
+    envVars:
+      - key: MYSQL_ROOT_PASSWORD
+        value: root
+      - key: MYSQL_DATABASE
+        value: flight_booking_system
+      - key: MYSQL_USER
+        value: htaythwe
+      - key: MYSQL_PASSWORD
+        value: htaythwe
+    disk:
+      name: mysql_data
+      mountPath: /var/lib/mysql
+      sizeGB: 1
