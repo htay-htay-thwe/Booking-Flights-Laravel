@@ -1,14 +1,15 @@
 version: 0.1
 services:
-  image: htayhtaythwe717/book-flights:laravel_0.1
-  env:
-  APP_ENV: production
-  DB_HOST: mysql
-  DB_DATABASE: flight_booking_system
-  DB_USERNAME: htaythwe
-  DB_PASSWORD: htaythwe
-  expose:
-    - 9000
+  laravel:
+    image: htayhtaythwe717/book-flights:laravel_0.1
+    env:
+      APP_ENV: production
+      DB_HOST: mysql
+      DB_DATABASE: flight_booking_system
+      DB_USERNAME: htaythwe
+      DB_PASSWORD: htaythwe
+    expose:
+      - 9000
 
   nginx:
     build:
