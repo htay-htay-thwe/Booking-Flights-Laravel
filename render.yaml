@@ -1,35 +1,36 @@
+version: 0.1
 services:
-  - name: laravel
-    type: web_service
+  laravel:
     image: htayhtaythwe717/book-flights:laravel_0.1
-    envVars:
-      - key: APP_ENV
-        value: production
-      - key: DB_HOST
-        value: mysql
-      - key: DB_DATABASE
-        value: flight_booking_system
-      - key: DB_USERNAME
-        value: htaythwe
-      - key: DB_PASSWORD
-        value: htaythwe
-    restartPolicy: always
+    env:
+      APP_ENV: production
+      DB_HOST: mysql
+      DB_DATABASE: flight_booking_system
+      DB_USERNAME: htaythwe
+      DB_PASSWORD: htaythwe
+    expose:
+      - 9000
 
-  - name: nginx
-    type: web_service
-    dockerfilePath: ./nginx/Dockerfile
-    envVars: []
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    depends_on:
+      - laravel
     ports:
       - port: 80
-        protocol: http
-    restartPolicy: always
-    dependsOn:
-      - laravel
 
-databases:
-  - name: mysql
-    plan: standard
-    userName: htaythwe
-    userPassword: htaythwe
-    databaseName: flight_booking_system
-    region: oregon
+  mysql:
+    image: mysql:8.0
+    env:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: flight_booking_system
+      MYSQL_USER: htaythwe
+      MYSQL_PASSWORD: htaythwe
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - port: 3306
+
+volumes:
+  mysql_data:
