@@ -2,7 +2,8 @@
 <script src="https://kit.fontawesome.com/930e3b0b55.js" crossorigin="anonymous"></script>
 
 {{-- tailwind vite --}}
-@vite('resources/css/app.css')
+@vite(['resources/css/app.css', 'resources/js/app.js'])
+
 
 {{-- emoji --}}
 <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">

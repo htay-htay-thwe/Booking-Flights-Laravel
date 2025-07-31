@@ -20,10 +20,11 @@ return [
     'allowed_methods'          => ['*'],
 
     'allowed_origins'          => [
+        'http://localhost',
         'http://localhost:5174',
     ],
 
-    'allowed_origins_patterns' => ['*'],
+    'allowed_origins_patterns' => [],
 
     'allowed_headers'          => ['*'],
 

@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+<<<<<<< HEAD
   app:
     image: htayhtaythwe717/book-flights:0.2
     container_name: flight_laravel
@@ -17,10 +18,56 @@ services:
     restart: always
     ports:
       - "3306:3306"
+=======
+  laravel:
+    image: htayhtaythwe717/book-flights:laravel_0.1
+    container_name: laravel_backend_flights
+    restart: unless-stopped
+    environment:
+      DB_HOST: mysql_db
+      DB_PORT: 3306
+      DB_DATABASE: flight_booking_system
+      DB_USERNAME: htaythwe
+      DB_PASSWORD: htaythwe
+      APP_ENV: production
+      APP_DEBUG: 'false'
+    volumes:
+      - ./:/var/www
+    expose:
+      - 9000
+
+  nginx_backend:
+    image: nginx:1.0
+    container_name: nginx_backend_flights
+    restart: unless-stopped
+    depends_on:
+      - laravel
+    ports:
+      - "8000:80"
+      - "5173:5173"
+    volumes:
+      - ./:/var/www
+
+  frontend:
+    image: htayhtaythwe717/book-flights:react_0.1
+    container_name: react_frontend_flights
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "5174:5174"
+    volumes:
+      - C:/Users/DELL/Downloads/flight_booking_website:/var/www
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: unless-stopped
+>>>>>>> d0c6342 (main)
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: flight_booking_system
       MYSQL_USER: htaythwe
+<<<<<<< HEAD
       MYSQL_PASSWORD: htayhtaythwe2001
     volumes:
       - dbdata:/var/lib/mysql
@@ -28,3 +75,13 @@ services:
 volumes:
   dbdata:
 
+=======
+      MYSQL_PASSWORD: htaythwe
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  mysql_data:
+>>>>>>> d0c6342 (main)

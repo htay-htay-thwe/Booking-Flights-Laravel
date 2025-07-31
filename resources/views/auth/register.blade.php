@@ -10,8 +10,7 @@
 
 </head>
 
-<body class="flex items-center justify-center min-h-screen bg-center bg-no-repeat bg-cover"
-    style="background-image: url('/images/city-bg.jpg');"> {{-- change to your background --}}
+<body class="flex items-center justify-center min-h-screen bg-center bg-no-repeat bg-cover"> {{-- change to your background --}}
 
     <form action="{{ route('register#action') }}" method="POST"
         class="w-full max-w-sm p-8 shadow-lg bg-gradient-to-b from-indigo-400 to-purple-600 rounded-2xl">
@@ -73,7 +72,7 @@
             <div class="mb-5">
                 <div class="flex items-center gap-2 text-white">
                     <i class="fa-solid fa-key"></i>
-                    <input type="password" name="confirmed_password" id="password"
+                    <input type="password" name="confirmed_password" id="passwordConfirm"
                         @error('confirmed_password') is-invalid @enderror
                         class="w-full text-white placeholder-white bg-transparent border-b border-white focus:outline-none"
                         placeholder="Confirm password" />

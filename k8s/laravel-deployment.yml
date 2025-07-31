@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laravel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: laravel
+  template:
+    metadata:
+      labels:
+        app: laravel
+    spec:
+      containers:
+        - name: laravel
+          image: htayhtaythwe717/book-flights:laravel_0.1
+          ports:
+            - containerPort: 9000
+          env:
+            - name: DB_HOST
+              value: mysql_book_flights
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_DATABASE
+              value: flight_booking_system
+            - name: DB_USERNAME
+              value: htaythwe
+            - name: DB_PASSWORD
+              value: htayhtaythwe2001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: laravel
+spec:
+  type: LoadBalancer
+  selector:
+    app: laravel
+  ports:
+    - port: 80
+      targetPort: 9000

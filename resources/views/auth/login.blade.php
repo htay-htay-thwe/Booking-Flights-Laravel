@@ -9,8 +9,7 @@
     @include('layouts.cdn')
 </head>
 
-<body class="flex items-center justify-center min-h-screen bg-center bg-no-repeat bg-cover"
-    style="background-image: url('/images/city-bg.jpg');"> {{-- replace with your background image --}}
+<body class="flex items-center justify-center min-h-screen bg-center bg-no-repeat bg-cover"> {{-- replace with your background image --}}
 
     <form action="{{ route('login#action') }}" method="POST"
         class="w-full max-w-sm p-8 shadow-lg bg-gradient-to-b from-indigo-400 to-purple-600 rounded-2xl">
