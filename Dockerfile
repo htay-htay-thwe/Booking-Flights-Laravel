@@ -76,7 +76,6 @@
 
 FROM php:8.2-fpm
 
-# Install system dependencies needed by Laravel
 RUN apt-get update && apt-get install -y \
     curl \
     zip unzip \
@@ -87,24 +86,27 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     && docker-php-ext-install pdo_mysql zip
 
-# Install Composer globally
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Set working directory
 WORKDIR /var/www/html
 
-# Copy application files
+# Copy package.json first for npm install caching
+COPY package*.json ./
+
+# Install Node.js and npm, then install dependencies and build assets
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && apt-get install -y nodejs
+RUN npm install
+RUN npm run build
+
+# Copy the rest of your Laravel app
 COPY . .
 
-# Fix permissions for Laravel storage and cache
+# Fix permissions for storage and cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Expose port 8000 for PHP built-in server
 EXPOSE 8000
 
-# Start Laravel with PHP built-in server
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
