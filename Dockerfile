@@ -44,7 +44,7 @@ WORKDIR /var/www/html
 COPY . .
 
 # Copy custom nginx config
-COPY ./nginx/default.conf /etc/nginx/sites-available/default
+COPY ./nginx/backend-nginx.conf /etc/nginx/sites-available/default
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
