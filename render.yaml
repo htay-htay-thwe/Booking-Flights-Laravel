@@ -25,15 +25,14 @@ services:
     dockerfilePath: ./nginx/Dockerfile
     envVars: []
     ports:
-      - port: 80
-        protocol: tcp
+      - number: 80 # ✅ use 'number' not 'port'
 
   - type: pserv
     name: mysql
     env: docker
     plan: free
     region: oregon
-    image: mysql:8.0
+    image: mysql:8.0 # ✅ use 'image', NOT 'dockerfilePath' for prebuilt images
     envVars:
       - key: MYSQL_ROOT_PASSWORD
         value: root
