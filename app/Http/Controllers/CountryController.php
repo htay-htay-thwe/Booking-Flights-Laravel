@@ -10,9 +10,9 @@ class CountryController extends Controller
         $currencyJson     = base_path('resources/data/country-by-currency-code.json');
         $abbreviationJson = base_path('resources/data/country-by-abbreviation.json');
 
-        $callingCodes  = json_decode(file_get_contents($callingJson));
-        $currencyCodes = json_decode(file_get_contents($currencyJson));
-        $abbreviation  = json_decode(file_get_contents($abbreviationJson));
+        $callingCodes  = json_decode(file_get_contents($callingJson), true);
+        $currencyCodes = json_decode(file_get_contents($currencyJson), true);
+        $abbreviation  = json_decode(file_get_contents($abbreviationJson), true);
 
 // Merge by country name
         $merged = $callingCodes->map(function ($item) use ($currencyCodes, $abbreviation) {

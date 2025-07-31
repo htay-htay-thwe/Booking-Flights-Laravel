@@ -94,10 +94,10 @@ class SeatController extends Controller
     {
 
         $path     = base_path('resources/data/airports.json');
-        $airports = json_decode(file_get_contents($path));
+        $airports = json_decode(file_get_contents($path), true);
 
-        $j     = base_path('resources/data/airlines.json');
-        $airlines = json_decode(file_get_contents($j));
+        $j        = base_path('resources/data/airlines.json');
+        $airlines = json_decode(file_get_contents($j), true);
 
         if (is_array($flights) && isset($flights[0])) {
             // Multiple flights

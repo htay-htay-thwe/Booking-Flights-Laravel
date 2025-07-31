@@ -142,10 +142,10 @@ class CartController extends Controller
     private function encodeJson($flights)
     {
         $path     = base_path('resources/data/airports.json');
-        $airports = json_decode(file_get_contents($path));
+        $airports = json_decode(file_get_contents($path), true);
 
         $j        = base_path('resources/data/airlines.json');
-        $airlines = json_decode(file_get_contents($j));
+        $airlines = json_decode(file_get_contents($j), true);
 
         return collect($flights)->map(function ($item) use ($airlines, $airports) {
             if (is_array($item) && isset($item[0])) {
