@@ -9,7 +9,7 @@ services:
       - key: APP_ENV
         value: production
       - key: DB_HOST
-        value: mysql
+        value: mysql # Matches persistent service name
       - key: DB_DATABASE
         value: flight_booking_system
       - key: DB_USERNAME
@@ -23,16 +23,14 @@ services:
     plan: free
     region: oregon
     dockerfilePath: ./nginx/Dockerfile
-    envVars: []
-    ports:
-      - number: 80 # ✅ use 'number' not 'port'
+    port: 80 # ✅ Corrected property name (single port)
 
-  - type: pserv
+  - type: service # ✅ Correct type for persistent services
     name: mysql
     env: docker
     plan: free
     region: oregon
-    image: mysql:8.0 # ✅ use 'image', NOT 'dockerfilePath' for prebuilt images
+    image: mysql:8.0 # ✅ Prebuilt image
     envVars:
       - key: MYSQL_ROOT_PASSWORD
         value: root
