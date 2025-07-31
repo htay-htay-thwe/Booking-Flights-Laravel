@@ -72,8 +72,6 @@
 # CMD ["sh", "-c", "php-fpm & nginx -g 'daemon off;'"]
 
 
-
-
 FROM php:8.2-fpm
 
 RUN apt-get update && apt-get install -y \
@@ -90,21 +88,21 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copy package.json first for npm install caching
-COPY package*.json ./
+# Copy all app files including vite.config.js and resources before building assets
+COPY . .
 
-# Install Node.js and npm, then install dependencies and build assets
+# Install Node.js and npm
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && apt-get install -y nodejs
+
+# Install npm dependencies and build assets
 RUN npm install
 RUN npm run build
-
-# Copy the rest of your Laravel app
-COPY . .
 
 # Fix permissions for storage and cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
+# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
 EXPOSE 8000
