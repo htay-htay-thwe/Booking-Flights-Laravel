@@ -16,8 +16,6 @@ services:
         value: htaythwe
       - key: DB_PASSWORD
         value: htaythwe
-    ports:
-      - 9000
 
   - type: web
     name: nginx-proxy
@@ -27,9 +25,8 @@ services:
     dockerfilePath: ./nginx/Dockerfile
     envVars: []
     ports:
-      - 80
-    dependsOn:
-      - serviceId: laravel-backend
+      - port: 80
+        protocol: tcp
 
   - type: pserv
     name: mysql
