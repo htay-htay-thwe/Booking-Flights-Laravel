@@ -31,11 +31,53 @@
 
 # CMD ["php-fpm"]
 
+# FROM php:8.2-fpm
+
+# # Install system dependencies
+# RUN apt-get update && apt-get install -y \
+#     nginx \
+#     curl \
+#     zip unzip \
+#     git \
+#     libzip-dev \
+#     libpng-dev \
+#     libonig-dev \
+#     libxml2-dev \
+#     && docker-php-ext-install pdo_mysql zip
+
+# # Install Composer globally
+# COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# # Set working directory
+# WORKDIR /var/www/html
+
+# # Copy application files
+# COPY . .
+
+# # Copy nginx config
+
+# COPY ./nginx/backend-nginx.conf /etc/nginx/nginx.conf
+
+
+# # Fix permissions for Laravel storage and cache
+# RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+#     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# # Install Laravel dependencies
+# RUN composer install --no-dev --optimize-autoloader
+
+# EXPOSE 80
+
+# # Start PHP-FPM and NGINX together
+# CMD ["sh", "-c", "php-fpm & nginx -g 'daemon off;'"]
+
+
+
+
 FROM php:8.2-fpm
 
-# Install system dependencies
+# Install system dependencies needed by Laravel
 RUN apt-get update && apt-get install -y \
-    nginx \
     curl \
     zip unzip \
     git \
@@ -54,10 +96,6 @@ WORKDIR /var/www/html
 # Copy application files
 COPY . .
 
-# Copy nginx config
-COPY ./nginx/backend-nginx.conf /etc/nginx/nginx.conf
-
-
 # Fix permissions for Laravel storage and cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
@@ -65,7 +103,8 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 # Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-EXPOSE 80
+# Expose port 8000 for PHP built-in server
+EXPOSE 8000
 
-# Start PHP-FPM and NGINX together
-CMD ["sh", "-c", "php-fpm & nginx -g 'daemon off;'"]
+# Start Laravel with PHP built-in server
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
