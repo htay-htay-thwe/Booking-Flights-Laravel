@@ -55,7 +55,8 @@ WORKDIR /var/www/html
 COPY . .
 
 # Copy nginx config
-COPY ./nginx/backend-nginx.conf /etc/nginx/sites-available/default
+COPY ./nginx/backend-nginx.conf /etc/nginx/nginx.conf
+
 
 # Fix permissions for Laravel storage and cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
