@@ -9,7 +9,7 @@ services:
       - key: APP_ENV
         value: production
       - key: DB_HOST
-        value: mysql # Matches persistent service name
+        value: mysql # Internal DNS name matches service name
       - key: DB_DATABASE
         value: flight_booking_system
       - key: DB_USERNAME
@@ -23,14 +23,14 @@ services:
     plan: free
     region: oregon
     dockerfilePath: ./nginx/Dockerfile
-    port: 80 # ✅ Corrected property name (single port)
+    port: 80 # Single port declaration
 
-  - type: service # ✅ Correct type for persistent services
+  - type: pServ # ✅ CORRECT type for persistent services
     name: mysql
     env: docker
     plan: free
     region: oregon
-    image: mysql:8.0 # ✅ Prebuilt image
+    image: mysql:8.0
     envVars:
       - key: MYSQL_ROOT_PASSWORD
         value: root
