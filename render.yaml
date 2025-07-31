@@ -1,6 +1,6 @@
 services:
   - name: laravel
-    type: docker
+    type: web_service
     image: htayhtaythwe717/book-flights:laravel_0.1
     envVars:
       - key: APP_ENV
@@ -16,7 +16,7 @@ services:
     restartPolicy: always
 
   - name: nginx
-    type: docker
+    type: web_service
     dockerfilePath: ./nginx/Dockerfile
     envVars: []
     ports:
