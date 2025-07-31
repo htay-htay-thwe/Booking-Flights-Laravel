@@ -1,20 +1,18 @@
 <?php
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Storage;
-
 class CountryController extends Controller
 {
     // get Country
     public function countryName()
     {
-        $callingJson      = Storage::get('country-by-calling-code.json');
-        $currencyJson     = Storage::get('country-by-currency-code.json');
-        $abbreviationJson = Storage::get('country-by-abbreviation.json');
+        $callingJson      = base_path('resources/data/country-by-calling-code.json');
+        $currencyJson     = base_path('resources/data/country-by-currency-code.json');
+        $abbreviationJson = base_path('resources/data/country-by-abbreviation.json');
 
-        $callingCodes  = collect(json_decode($callingJson, true));
-        $currencyCodes = collect(json_decode($currencyJson, true));
-        $abbreviation  = collect(json_decode($abbreviationJson, true));
+        $callingCodes  = json_decode(file_get_contents($callingJson));
+        $currencyCodes = json_decode(file_get_contents($currencyJson));
+        $abbreviation  = json_decode(file_get_contents($abbreviationJson));
 
 // Merge by country name
         $merged = $callingCodes->map(function ($item) use ($currencyCodes, $abbreviation) {

@@ -6,7 +6,6 @@ use App\Models\Cart;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CartController extends Controller
@@ -142,10 +141,11 @@ class CartController extends Controller
 
     private function encodeJson($flights)
     {
-        $json     = Storage::get('airports.json');
-        $airports = collect(json_decode($json, true));
-        $j        = Storage::get('airlines.json');
-        $airlines = collect(json_decode($j, true));
+        $path     = base_path('resources/data/airports.json');
+        $airports = json_decode(file_get_contents($path));
+
+        $j        = base_path('resources/data/airlines.json');
+        $airlines = json_decode(file_get_contents($j));
 
         return collect($flights)->map(function ($item) use ($airlines, $airports) {
             if (is_array($item) && isset($item[0])) {

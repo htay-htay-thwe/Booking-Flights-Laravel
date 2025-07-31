@@ -8,7 +8,6 @@ use App\Models\Reserve;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class FlightController extends Controller
 {
@@ -17,8 +16,10 @@ class FlightController extends Controller
     {
         $search = strtolower($request->query('search', ''));
 
-        $json     = Storage::get('airports.json'); // Load big JSON file
-        $airports = json_decode($json, true);
+
+       $path     = base_path('resources/data/airports.json');
+       $airports = json_decode(file_get_contents($path));
+
 
         // If no search query, return first 6 or 7 airports as default
         if (empty($search)) {
@@ -232,10 +233,12 @@ class FlightController extends Controller
     private function encodeJson($flights)
     {
 
-        $json     = Storage::get('airports.json'); // Load big JSON file
-        $airports = collect(json_decode($json, true));
-        $j        = Storage::get('airlines.json'); // Load big JSON file
-        $airlines = collect(json_decode($j, true));
+
+        $path     = base_path('resources/data/airports.json');
+        $airports = json_decode(file_get_contents($path));
+
+        $j     = base_path('resources/data/airlines.json');
+        $airlines = json_decode(file_get_contents($j));
 
         if (is_array($flights) && isset($flights[0])) {
             // Multiple flights
