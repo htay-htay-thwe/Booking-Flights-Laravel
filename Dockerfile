@@ -33,25 +33,18 @@
 
 FROM php:8.2-fpm
 
-# Install system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
     nginx \
     zip unzip curl libzip-dev libpng-dev libonig-dev libxml2-dev \
     && docker-php-ext-install pdo_mysql zip
 
-# Copy Laravel app
 WORKDIR /var/www/html
 COPY . .
 
-# Copy custom nginx config
 COPY ./nginx/backend-nginx.conf /etc/nginx/sites-available/default
 
-# Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Expose ports
 EXPOSE 80
 
-# Start both PHP-FPM and Nginx when container starts
-CMD service nginx start && php-fpm
-
+CMD ["sh", "-c", "php-fpm & nginx -g 'daemon off;'"]
