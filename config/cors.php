@@ -22,6 +22,7 @@ return [
     'allowed_origins'          => [
         'http://localhost',
         'http://localhost:5174',
+        'https: //silver-tartufo-da81cd.netlify.app',
     ],
 
     'allowed_origins_patterns' => [],
