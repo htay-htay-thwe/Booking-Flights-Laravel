@@ -33,18 +33,38 @@
 
 FROM php:8.2-fpm
 
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     nginx \
-    zip unzip curl libzip-dev libpng-dev libonig-dev libxml2-dev \
+    curl \
+    zip unzip \
+    git \
+    libzip-dev \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
     && docker-php-ext-install pdo_mysql zip
 
+# Install Composer globally
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Set working directory
 WORKDIR /var/www/html
+
+# Copy application files
 COPY . .
 
+# Copy nginx config
 COPY ./nginx/backend-nginx.conf /etc/nginx/sites-available/default
 
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Fix permissions for Laravel storage and cache
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Install Laravel dependencies
+RUN composer install --no-dev --optimize-autoloader
 
 EXPOSE 80
 
+# Start PHP-FPM and NGINX together
 CMD ["sh", "-c", "php-fpm & nginx -g 'daemon off;'"]
