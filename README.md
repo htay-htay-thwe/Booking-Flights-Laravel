@@ -8,7 +8,7 @@
 </p>
 
 
-```markdown
+
 # ✈️ Booking Flights API
 
 A robust backend API built with **Laravel**, designed to manage flight bookings, reservations, and related data. This project demonstrates proficiency in modern PHP development, API design, and database management.
