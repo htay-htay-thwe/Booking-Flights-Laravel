@@ -96,7 +96,6 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && apt-get install
 
 # Install npm dependencies and build assets
 RUN npm install
-RUN npm run build
 
 # Fix permissions for storage and cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
